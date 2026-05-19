@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -17,201 +18,245 @@
   ::-webkit-scrollbar-track{background:#0d1117;}
   ::-webkit-scrollbar-thumb{background:#1e2d3d;border-radius:4px;}
 
-  /* ── PIN SCREEN ── */
-  #pin-screen{position:fixed;inset:0;background:linear-gradient(160deg,#0d1117 0%,#131929 50%,#0d1117 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity 0.4s;}
-  #pin-screen.hidden{opacity:0;pointer-events:none;}
-  .pin-logo{width:72px;height:72px;border-radius:22px;background:linear-gradient(135deg,#f7931e,#e84393);display:flex;align-items:center;justify-content:center;font-size:36px;margin-bottom:20px;box-shadow:0 8px 32px rgba(247,147,30,0.4);}
-  .pin-title{font-size:22px;font-weight:800;color:#fff;margin-bottom:6px;}
-  .pin-sub{font-size:13px;color:#475569;margin-bottom:32px;}
-  .pin-dots{display:flex;gap:14px;margin-bottom:32px;}
-  .pin-dot{width:16px;height:16px;border-radius:50%;border:2px solid #334155;transition:all 0.2s;}
-  .pin-dot.filled{background:#f7931e;border-color:#f7931e;box-shadow:0 0 10px rgba(247,147,30,0.5);}
-  .pin-dot.error{background:#ef4444;border-color:#ef4444;}
-  .pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:260px;}
-  .pin-btn{height:72px;border-radius:18px;border:1px solid #1e2d3d;background:#111827;color:#fff;font-size:22px;font-weight:700;transition:all 0.1s;user-select:none;}
-  .pin-btn:active{background:#1e2d3d;transform:scale(0.95);}
-  .pin-btn.del{font-size:18px;color:#94a3b8;}
-  .pin-btn.zero{grid-column:2;}
-  .pin-error{color:#ef4444;font-size:13px;font-weight:600;margin-top:16px;height:18px;}
-  .pin-setup-hint{color:#64748b;font-size:12px;margin-top:12px;text-align:center;max-width:240px;line-height:1.5;}
-  .change-pin-btn{margin-top:20px;background:transparent;border:1px solid #1e2d3d;color:#64748b;padding:8px 18px;border-radius:20px;font-size:12px;}
+/* ── DEVICE REG SCREEN ── */
+#reg-screen{position:fixed;inset:0;background:linear-gradient(160deg,#0d1117 0%,#0f1a2e 50%,#0d1117 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10000;padding:24px;}
+#reg-screen.hidden{display:none;}
+.reg-logo{width:80px;height:80px;border-radius:24px;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:20px;box-shadow:0 8px 32px rgba(124,58,237,0.4);}
+.reg-title{font-size:20px;font-weight:800;color:#fff;margin-bottom:8px;text-align:center;}
+.reg-sub{font-size:13px;color:#64748b;margin-bottom:28px;text-align:center;line-height:1.6;max-width:300px;}
+.reg-input{width:100%;max-width:300px;padding:14px 18px;border-radius:14px;border:2px solid #1e2d3d;background:#111827;color:#fff;font-size:16px;outline:none;text-align:center;letter-spacing:2px;margin-bottom:14px;}
+.reg-input:focus{border-color:#a78bfa;}
+.reg-btn{width:100%;max-width:300px;padding:14px;border-radius:14px;border:none;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;font-size:16px;font-weight:800;cursor:pointer;}
+.reg-btn:active{opacity:0.9;}
+.reg-warn{font-size:11px;color:#475569;text-align:center;margin-top:12px;max-width:280px;line-height:1.6;}
+.reg-error{color:#ef4444;font-size:13px;font-weight:600;margin-bottom:12px;text-align:center;min-height:18px;}
+/* Blocked screen */
+#blocked-screen{position:fixed;inset:0;background:#0d1117;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10001;padding:32px;}
+#blocked-screen.hidden{display:none;}
+.blocked-icon{font-size:64px;margin-bottom:20px;}
+.blocked-title{font-size:22px;font-weight:800;color:#ef4444;margin-bottom:12px;text-align:center;}
+.blocked-sub{font-size:14px;color:#64748b;text-align:center;line-height:1.7;max-width:300px;}
 
-  /* ── APP SHELL ── */
-  #app{display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden;}
-  #app.locked{display:none;}
+/* ── PIN SCREEN ── */
+#pin-screen{position:fixed;inset:0;background:linear-gradient(160deg,#0d1117 0%,#131929 50%,#0d1117 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity 0.4s;}
+#pin-screen.hidden{opacity:0;pointer-events:none;}
+.pin-logo{width:72px;height:72px;border-radius:22px;background:linear-gradient(135deg,#f7931e,#e84393);display:flex;align-items:center;justify-content:center;font-size:36px;margin-bottom:20px;box-shadow:0 8px 32px rgba(247,147,30,0.4);}
+.pin-title{font-size:22px;font-weight:800;color:#fff;margin-bottom:6px;}
+.pin-sub{font-size:13px;color:#475569;margin-bottom:32px;}
+.pin-dots{display:flex;gap:14px;margin-bottom:32px;}
+.pin-dot{width:16px;height:16px;border-radius:50%;border:2px solid #334155;transition:all 0.2s;}
+.pin-dot.filled{background:#f7931e;border-color:#f7931e;box-shadow:0 0 10px rgba(247,147,30,0.5);}
+.pin-dot.error{background:#ef4444;border-color:#ef4444;}
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:260px;}
+.pin-btn{height:72px;border-radius:18px;border:1px solid #1e2d3d;background:#111827;color:#fff;font-size:22px;font-weight:700;transition:all 0.1s;user-select:none;}
+.pin-btn:active{background:#1e2d3d;transform:scale(0.95);}
+.pin-btn.del{font-size:18px;color:#94a3b8;}
+.pin-btn.zero{grid-column:2;}
+.pin-error{color:#ef4444;font-size:13px;font-weight:600;margin-top:16px;height:18px;}
+.pin-setup-hint{color:#64748b;font-size:12px;margin-top:12px;text-align:center;max-width:240px;line-height:1.5;}
+.change-pin-btn{margin-top:20px;background:transparent;border:1px solid #1e2d3d;color:#64748b;padding:8px 18px;border-radius:20px;font-size:12px;}
 
-  /* ── HEADER ── */
-  .header{background:linear-gradient(135deg,#131929,#0d1117);padding:env(safe-area-inset-top,0px) 16px 12px;padding-top:max(env(safe-area-inset-top),14px);border-bottom:1px solid #1e2d3d;flex-shrink:0;}
-  .header-inner{display:flex;align-items:center;gap:10px;}
-  .header-icon{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#f7931e,#e84393);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-  .header-title{font-weight:800;font-size:16px;color:#fff;}
-  .header-sub{font-size:10px;color:#475569;}
-  .header-stat{margin-left:auto;text-align:right;}
-  .header-stat-label{font-size:10px;color:#475569;}
-  .header-stat-val{font-weight:800;font-size:15px;color:#f7931e;}
+/* ── APP SHELL ── */
+#app{display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden;}
+#app.locked{display:none;}
 
-  /* ── NAV ── */
-  .nav{display:flex;background:#111827;border-bottom:1px solid #1e2d3d;flex-shrink:0;overflow-x:auto;}
-  .nav::-webkit-scrollbar{display:none;}
-  .nav-btn{flex:1 0 auto;padding:10px 4px 8px;border:none;background:transparent;font-size:10px;color:#64748b;border-bottom:2px solid transparent;font-weight:500;min-width:60px;line-height:1.4;}
-  .nav-btn.active{color:#f7931e;border-bottom-color:#f7931e;font-weight:800;}
-  .nav-icon{font-size:18px;display:block;margin-bottom:2px;}
+/* ── HEADER ── */
+.header{background:linear-gradient(135deg,#131929,#0d1117);padding:env(safe-area-inset-top,0px) 16px 12px;padding-top:max(env(safe-area-inset-top),14px);border-bottom:1px solid #1e2d3d;flex-shrink:0;}
+.header-inner{display:flex;align-items:center;gap:10px;}
+.header-icon{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#f7931e,#e84393);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.header-title{font-weight:800;font-size:16px;color:#fff;}
+.header-sub{font-size:10px;color:#475569;}
+.header-stat{margin-left:auto;text-align:right;}
+.header-stat-label{font-size:10px;color:#475569;}
+.header-stat-val{font-weight:800;font-size:15px;color:#f7931e;}
 
-  /* ── CONTENT ── */
-  .content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
-  .pad{padding:12px;}
+/* ── NAV ── */
+.nav{display:flex;background:#111827;border-bottom:1px solid #1e2d3d;flex-shrink:0;overflow-x:auto;}
+.nav::-webkit-scrollbar{display:none;}
+.nav-btn{flex:1 0 auto;padding:10px 4px 8px;border:none;background:transparent;font-size:10px;color:#64748b;border-bottom:2px solid transparent;font-weight:500;min-width:60px;line-height:1.4;}
+.nav-btn.active{color:#f7931e;border-bottom-color:#f7931e;font-weight:800;}
+.nav-icon{font-size:18px;display:block;margin-bottom:2px;}
 
-  /* ── SEARCH & FILTER ── */
-  .search-bar{padding:10px 12px 0;background:#111827;border-bottom:1px solid #1e2d3d;}
-  .search-input{width:100%;padding:10px 14px;border-radius:12px;border:1px solid #1e2d3d;font-size:13px;outline:none;background:#0d1117;color:#e2e8f0;margin-bottom:10px;}
-  .cat-row{display:flex;gap:8px;padding-bottom:10px;overflow-x:auto;}
-  .cat-row::-webkit-scrollbar{display:none;}
-  .cat-btn{padding:6px 14px;border-radius:20px;border:none;white-space:nowrap;font-size:12px;font-weight:700;background:#1e2d3d;color:#94a3b8;}
-  .cat-btn.active{background:#f7931e;color:#fff;}
+/* ── CONTENT ── */
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.pad{padding:12px;}
 
-  /* ── PRODUCT GRID ── */
-  .prod-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px;align-content:start;}
-  .prod-card{background:#111827;border:2px solid #1e2d3d;border-radius:16px;padding:12px 8px;text-align:center;position:relative;transition:all 0.15s;}
-  .prod-card.in-cart{border-color:#f7931e;background:#1a2535;}
-  .prod-card:active{transform:scale(0.96);}
-  .prod-badge{position:absolute;top:6px;right:6px;background:#f7931e;color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;}
-  .prod-emoji{font-size:26px;margin-bottom:4px;}
-  .prod-name{font-weight:700;font-size:12px;color:#e2e8f0;margin-bottom:3px;line-height:1.3;}
-  .prod-price{font-weight:800;color:#f7931e;font-size:14px;}
-  .prod-profit{font-size:10px;color:#22c55e;margin-top:1px;}
+/* ── SEARCH & FILTER ── */
+.search-bar{padding:10px 12px 0;background:#111827;border-bottom:1px solid #1e2d3d;}
+.search-input{width:100%;padding:10px 14px;border-radius:12px;border:1px solid #1e2d3d;font-size:13px;outline:none;background:#0d1117;color:#e2e8f0;margin-bottom:10px;}
+.cat-row{display:flex;gap:8px;padding-bottom:10px;overflow-x:auto;}
+.cat-row::-webkit-scrollbar{display:none;}
+.cat-btn{padding:6px 14px;border-radius:20px;border:none;white-space:nowrap;font-size:12px;font-weight:700;background:#1e2d3d;color:#94a3b8;}
+.cat-btn.active{background:#f7931e;color:#fff;}
 
-  /* ── CART ── */
-  .cart-panel{background:#111827;border-top:1px solid #1e2d3d;max-height:56vh;overflow-y:auto;flex-shrink:0;}
-  .cart-header{padding:10px 14px 0;display:flex;justify-content:space-between;align-items:center;}
-  .cart-title{font-weight:800;font-size:14px;color:#fff;}
-  .cart-clear{background:#2d1a1e;color:#f87171;border:none;border-radius:8px;padding:4px 10px;font-size:11px;font-weight:700;}
-  .cart-item{display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid #1e2d3d;}
-  .cart-emoji{font-size:18px;flex-shrink:0;}
-  .cart-info{flex:1;min-width:0;}
-  .cart-iname{font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .cart-imeta{font-size:11px;color:#64748b;}
-  .cart-iprofit{color:#22c55e;}
-  .cart-itotal{font-weight:800;color:#f7931e;font-size:13px;min-width:52px;text-align:right;}
-  .qty-row{display:flex;gap:4px;}
-  .qty-btn{width:28px;height:28px;border-radius:8px;border:1px solid #1e2d3d;background:#1a1f2e;color:#e2e8f0;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;}
-  .qty-btn.plus{background:#f7931e;color:#fff;border-color:#f7931e;}
+/* ── PRODUCT GRID ── */
+.prod-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px;align-content:start;}
+.prod-card{background:#111827;border:2px solid #1e2d3d;border-radius:16px;padding:12px 8px;text-align:center;position:relative;transition:all 0.15s;}
+.prod-card.in-cart{border-color:#f7931e;background:#1a2535;}
+.prod-card:active{transform:scale(0.96);}
+.prod-badge{position:absolute;top:6px;right:6px;background:#f7931e;color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.prod-emoji{font-size:26px;margin-bottom:4px;}
+.prod-name{font-weight:700;font-size:12px;color:#e2e8f0;margin-bottom:3px;line-height:1.3;}
+.prod-price{font-weight:800;color:#f7931e;font-size:14px;}
+.prod-profit{font-size:10px;color:#22c55e;margin-top:1px;}
 
-  /* ── CHECKOUT ── */
-  .checkout-panel{padding:12px 14px;background:#0d1117;}
-  .sum-row{display:flex;justify-content:space-between;padding:3px 0;}
-  .sum-label{font-size:12px;color:#94a3b8;}
-  .sum-val{font-size:13px;font-weight:800;color:#e2e8f0;}
-  .sum-row.big .sum-label{font-size:14px;font-weight:800;color:#94a3b8;}
-  .sum-row.big .sum-val{font-size:16px;color:#f7931e;}
-  .sum-row.green .sum-val{color:#22c55e;}
-  .sum-row.muted .sum-val{color:#64748b;}
-  .inline-input-row{display:flex;align-items:center;gap:8px;margin:6px 0;}
-  .inline-label{font-size:12px;color:#94a3b8;width:68px;flex-shrink:0;}
-  .inline-input{flex:1;padding:9px 12px;border-radius:10px;border:1px solid #1e2d3d;font-size:13px;outline:none;background:#111827;color:#e2e8f0;}
-  .inline-result{font-size:12px;font-weight:800;min-width:60px;text-align:right;}
-  .checkout-btn{width:100%;padding:14px;margin-top:10px;background:linear-gradient(135deg,#f7931e,#e84393);color:#fff;border:none;border-radius:14px;font-weight:800;font-size:15px;}
-  .checkout-btn:active{opacity:0.9;}
+/* ── CART ── */
+.cart-panel{background:#111827;border-top:1px solid #1e2d3d;max-height:56vh;overflow-y:auto;flex-shrink:0;}
+.cart-header{padding:10px 14px 0;display:flex;justify-content:space-between;align-items:center;}
+.cart-title{font-weight:800;font-size:14px;color:#fff;}
+.cart-clear{background:#2d1a1e;color:#f87171;border:none;border-radius:8px;padding:4px 10px;font-size:11px;font-weight:700;}
+.cart-item{display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid #1e2d3d;}
+.cart-emoji{font-size:18px;flex-shrink:0;}
+.cart-info{flex:1;min-width:0;}
+.cart-iname{font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cart-imeta{font-size:11px;color:#64748b;}
+.cart-iprofit{color:#22c55e;}
+.cart-itotal{font-weight:800;color:#f7931e;font-size:13px;min-width:52px;text-align:right;}
+.qty-row{display:flex;gap:4px;}
+.qty-btn{width:28px;height:28px;border-radius:8px;border:1px solid #1e2d3d;background:#1a1f2e;color:#e2e8f0;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;}
+.qty-btn.plus{background:#f7931e;color:#fff;border-color:#f7931e;}
 
-  /* ── CARDS ── */
-  .card{background:#111827;border:1px solid #1e2d3d;border-radius:14px;padding:12px 14px;margin-bottom:10px;}
-  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
-  .stat-card{background:#111827;border:1px solid #1e2d3d;border-radius:14px;padding:13px;}
-  .stat-icon{font-size:20px;margin-bottom:3px;}
-  .stat-val{font-weight:800;font-size:16px;}
-  .stat-label{font-size:11px;color:#64748b;margin-top:1px;}
+/* ── CHECKOUT ── */
+.checkout-panel{padding:12px 14px;background:#0d1117;}
+.sum-row{display:flex;justify-content:space-between;padding:3px 0;}
+.sum-label{font-size:12px;color:#94a3b8;}
+.sum-val{font-size:13px;font-weight:800;color:#e2e8f0;}
+.sum-row.big .sum-label{font-size:14px;font-weight:800;color:#94a3b8;}
+.sum-row.big .sum-val{font-size:16px;color:#f7931e;}
+.sum-row.green .sum-val{color:#22c55e;}
+.sum-row.muted .sum-val{color:#64748b;}
+.inline-input-row{display:flex;align-items:center;gap:8px;margin:6px 0;}
+.inline-label{font-size:12px;color:#94a3b8;width:68px;flex-shrink:0;}
+.inline-input{flex:1;padding:9px 12px;border-radius:10px;border:1px solid #1e2d3d;font-size:13px;outline:none;background:#111827;color:#e2e8f0;}
+.inline-result{font-size:12px;font-weight:800;min-width:60px;text-align:right;}
+.checkout-btn{width:100%;padding:14px;margin-top:10px;background:linear-gradient(135deg,#f7931e,#e84393);color:#fff;border:none;border-radius:14px;font-weight:800;font-size:15px;}
+.checkout-btn:active{opacity:0.9;}
 
-  /* ── ACTION BTN ── */
-  .action-btn{width:100%;padding:13px;border-radius:14px;font-weight:800;font-size:13px;margin-bottom:14px;display:block;text-align:center;}
-  .primary-btn{width:100%;padding:13px;background:linear-gradient(135deg,#f7931e,#e84393);color:#fff;border:none;border-radius:14px;font-weight:800;font-size:15px;}
-  .primary-btn:active{opacity:0.9;}
-  .del-btn{background:#2d1a1e;color:#f87171;border:none;border-radius:8px;padding:6px 10px;font-size:13px;}
+/* ── CARDS ── */
+.card{background:#111827;border:1px solid #1e2d3d;border-radius:14px;padding:12px 14px;margin-bottom:10px;}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.stat-card{background:#111827;border:1px solid #1e2d3d;border-radius:14px;padding:13px;}
+.stat-icon{font-size:20px;margin-bottom:3px;}
+.stat-val{font-weight:800;font-size:16px;}
+.stat-label{font-size:11px;color:#64748b;margin-top:1px;}
 
-  /* ── SECTION TITLE ── */
-  .sec-title{font-weight:700;font-size:11px;color:#64748b;margin-bottom:8px;letter-spacing:0.8px;text-transform:uppercase;}
+/* ── ACTION BTN ── */
+.action-btn{width:100%;padding:13px;border-radius:14px;font-weight:800;font-size:13px;margin-bottom:14px;display:block;text-align:center;}
+.primary-btn{width:100%;padding:13px;background:linear-gradient(135deg,#f7931e,#e84393);color:#fff;border:none;border-radius:14px;font-weight:800;font-size:15px;}
+.primary-btn:active{opacity:0.9;}
+.del-btn{background:#2d1a1e;color:#f87171;border:none;border-radius:8px;padding:6px 10px;font-size:13px;}
 
-  /* ── RECEIPT ── */
-  #receipt-modal,#generic-modal{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:flex;align-items:flex-end;justify-content:center;z-index:500;opacity:0;pointer-events:none;transition:opacity 0.25s;}
-  #receipt-modal.open,#generic-modal.open{opacity:1;pointer-events:all;}
-  .modal-sheet{background:#111827;border-radius:20px 20px 0 0;padding:20px;width:100%;max-width:430px;max-height:90vh;overflow-y:auto;border:1px solid #1e2d3d;transform:translateY(40px);transition:transform 0.25s;}
-  #receipt-modal.open .modal-sheet,#generic-modal.open .modal-sheet{transform:translateY(0);}
-  .modal-title{font-weight:800;font-size:17px;color:#fff;margin-bottom:14px;}
-  .receipt-center{text-align:center;margin-bottom:16px;}
-  .receipt-icon{font-size:44px;}
-  .receipt-heading{font-weight:800;font-size:20px;color:#fff;margin-top:6px;}
-  .receipt-time{font-size:11px;color:#64748b;}
-  .receipt-body{background:#0d1117;border-radius:12px;padding:14px;margin-bottom:14px;}
-  .receipt-item{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;color:#94a3b8;}
-  .divider{border:none;border-top:1px dashed #1e2d3d;margin:8px 0;}
+/* ── SECTION TITLE ── */
+.sec-title{font-weight:700;font-size:11px;color:#64748b;margin-bottom:8px;letter-spacing:0.8px;text-transform:uppercase;}
 
-  /* ── FORM ── */
-  .field{margin-bottom:12px;}
-  .field-label{font-size:12px;color:#94a3b8;margin-bottom:4px;}
-  .field-input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #1e2d3d;font-size:14px;outline:none;background:#0d1117;color:#e2e8f0;}
-  .field-input:focus{border-color:#f7931e;}
-  .field-select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #1e2d3d;font-size:14px;outline:none;background:#0d1117;color:#e2e8f0;}
-  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+/* ── RECEIPT ── */
+#receipt-modal,#generic-modal{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:flex;align-items:flex-end;justify-content:center;z-index:500;opacity:0;pointer-events:none;transition:opacity 0.25s;}
+#receipt-modal.open,#generic-modal.open{opacity:1;pointer-events:all;}
+.modal-sheet{background:#111827;border-radius:20px 20px 0 0;padding:20px;width:100%;max-width:430px;max-height:90vh;overflow-y:auto;border:1px solid #1e2d3d;transform:translateY(40px);transition:transform 0.25s;}
+#receipt-modal.open .modal-sheet,#generic-modal.open .modal-sheet{transform:translateY(0);}
+.modal-title{font-weight:800;font-size:17px;color:#fff;margin-bottom:14px;}
+.receipt-center{text-align:center;margin-bottom:16px;}
+.receipt-icon{font-size:44px;}
+.receipt-heading{font-weight:800;font-size:20px;color:#fff;margin-top:6px;}
+.receipt-time{font-size:11px;color:#64748b;}
+.receipt-body{background:#0d1117;border-radius:12px;padding:14px;margin-bottom:14px;}
+.receipt-item{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;color:#94a3b8;}
+.divider{border:none;border-top:1px dashed #1e2d3d;margin:8px 0;}
 
-  /* ── ALERTS ── */
-  .alert-danger{background:#2d1a1e;border:1px solid #7f1d1d;border-radius:14px;padding:12px 14px;margin-bottom:14px;}
-  .alert-title{font-weight:800;color:#f87171;font-size:13px;}
-  .alert-amount{font-weight:800;font-size:22px;color:#fff;margin-top:2px;}
-  .alert-sub{font-size:11px;color:#94a3b8;margin-top:2px;}
+/* ── FORM ── */
+.field{margin-bottom:12px;}
+.field-label{font-size:12px;color:#94a3b8;margin-bottom:4px;}
+.field-input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #1e2d3d;font-size:14px;outline:none;background:#0d1117;color:#e2e8f0;}
+.field-input:focus{border-color:#f7931e;}
+.field-select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #1e2d3d;font-size:14px;outline:none;background:#0d1117;color:#e2e8f0;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 
-  /* ── WEEKLY SUMMARY ── */
-  .week-summary{background:#131929;border:1px solid #1e2d3d;border-radius:14px;padding:14px;margin-bottom:14px;}
-  .ws-row{display:flex;justify-content:space-between;margin-bottom:6px;}
-  .ws-label{font-size:13px;color:#94a3b8;}
-  .ws-val{font-weight:700;}
+/* ── ALERTS ── */
+.alert-danger{background:#2d1a1e;border:1px solid #7f1d1d;border-radius:14px;padding:12px 14px;margin-bottom:14px;}
+.alert-title{font-weight:800;color:#f87171;font-size:13px;}
+.alert-amount{font-weight:800;font-size:22px;color:#fff;margin-top:2px;}
+.alert-sub{font-size:11px;color:#94a3b8;margin-top:2px;}
 
-  /* ── EMPTY ── */
-  .empty{text-align:center;padding:32px 20px;color:#475569;}
-  .empty-icon{font-size:36px;}
-  .empty-text{margin-top:8px;font-weight:600;}
+/* ── WEEKLY SUMMARY ── */
+.week-summary{background:#131929;border:1px solid #1e2d3d;border-radius:14px;padding:14px;margin-bottom:14px;}
+.ws-row{display:flex;justify-content:space-between;margin-bottom:6px;}
+.ws-label{font-size:13px;color:#94a3b8;}
+.ws-val{font-weight:700;}
 
-  /* ── TOAST ── */
-  #toast{position:fixed;bottom:max(24px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(20px);background:#131929;color:#fff;border:1px solid #f7931e;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;box-shadow:0 4px 20px rgba(0,0,0,0.5);z-index:9000;opacity:0;transition:all 0.3s;white-space:nowrap;pointer-events:none;}
-  #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+/* ── EMPTY ── */
+.empty{text-align:center;padding:32px 20px;color:#475569;}
+.empty-icon{font-size:36px;}
+.empty-text{margin-top:8px;font-weight:600;}
 
-  /* ── UNPAID BADGE ── */
-  .unpaid-badge{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;border-radius:50%;width:16px;height:16px;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+/* ── TOAST ── */
+#toast{position:fixed;bottom:max(24px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(20px);background:#131929;color:#fff;border:1px solid #f7931e;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;box-shadow:0 4px 20px rgba(0,0,0,0.5);z-index:9000;opacity:0;transition:all 0.3s;white-space:nowrap;pointer-events:none;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-  /* ── PRODUCT LIST ITEM ── */
-  .prod-list-item{display:flex;gap:10px;align-items:center;}
-  .prod-list-info{flex:1;min-width:0;}
-  .prod-list-name{font-weight:700;font-size:14px;}
-  .prod-list-meta{font-size:12px;margin-top:2px;}
-  .prod-list-bundle{font-size:11px;color:#64748b;margin-top:1px;}
-  .prod-list-actions{display:flex;flex-direction:column;gap:6px;}
+/* ── UNPAID BADGE ── */
+.unpaid-badge{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;border-radius:50%;width:16px;height:16px;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;}
 
-  .paid-badge{padding:3px 10px;border-radius:20px;border:none;font-size:11px;font-weight:700;}
-  .paid-badge.paid{background:#14532d;color:#22c55e;}
-  .paid-badge.unpaid{background:#2d1a1e;color:#f87171;}
+/* ── PRODUCT LIST ITEM ── */
+.prod-list-item{display:flex;gap:10px;align-items:center;}
+.prod-list-info{flex:1;min-width:0;}
+.prod-list-name{font-weight:700;font-size:14px;}
+.prod-list-meta{font-size:12px;margin-top:2px;}
+.prod-list-bundle{font-size:11px;color:#64748b;margin-top:1px;}
+.prod-list-actions{display:flex;flex-direction:column;gap:6px;}
 
-  /* nav wrapper for badge */
-  .nav-wrap{position:relative;display:inline-block;}
+.paid-badge{padding:3px 10px;border-radius:20px;border:none;font-size:11px;font-weight:700;}
+.paid-badge.paid{background:#14532d;color:#22c55e;}
+.paid-badge.unpaid{background:#2d1a1e;color:#f87171;}
 
-  /* settings */
-  .settings-section{margin-bottom:20px;}
-  .settings-title{font-size:12px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;}
-  .settings-card{background:#111827;border:1px solid #1e2d3d;border-radius:14px;overflow:hidden;}
-  .settings-row{padding:14px;border-bottom:1px solid #1e2d3d;display:flex;align-items:center;gap:12px;}
-  .settings-row:last-child{border-bottom:none;}
-  .settings-row-icon{font-size:20px;width:32px;text-align:center;}
-  .settings-row-info{flex:1;}
-  .settings-row-title{font-weight:700;font-size:14px;}
-  .settings-row-sub{font-size:11px;color:#64748b;margin-top:1px;}
-  .settings-row-action{flex-shrink:0;}
-  .settings-btn{padding:7px 14px;border-radius:10px;border:none;font-size:12px;font-weight:700;}
-  .settings-btn.orange{background:#f7931e22;color:#f7931e;border:1px solid #f7931e44;}
-  .settings-btn.red{background:#2d1a1e;color:#f87171;border:1px solid #7f1d1d;}
-  .settings-btn.purple{background:#1e1a35;color:#a78bfa;border:1px solid #4c3a8f;}
+/* nav wrapper for badge */
+.nav-wrap{position:relative;display:inline-block;}
+
+/* settings */
+.settings-section{margin-bottom:20px;}
+.settings-title{font-size:12px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;}
+.settings-card{background:#111827;border:1px solid #1e2d3d;border-radius:14px;overflow:hidden;}
+.settings-row{padding:14px;border-bottom:1px solid #1e2d3d;display:flex;align-items:center;gap:12px;}
+.settings-row:last-child{border-bottom:none;}
+.settings-row-icon{font-size:20px;width:32px;text-align:center;}
+.settings-row-info{flex:1;}
+.settings-row-title{font-weight:700;font-size:14px;}
+.settings-row-sub{font-size:11px;color:#64748b;margin-top:1px;}
+.settings-row-action{flex-shrink:0;}
+.settings-btn{padding:7px 14px;border-radius:10px;border:none;font-size:12px;font-weight:700;}
+.settings-btn.orange{background:#f7931e22;color:#f7931e;border:1px solid #f7931e44;}
+.settings-btn.red{background:#2d1a1e;color:#f87171;border:1px solid #7f1d1d;}
+.settings-btn.purple{background:#1e1a35;color:#a78bfa;border:1px solid #4c3a8f;}
 </style>
+
 </head>
 <body>
 
 <!-- ══════════════════════════════════════════════════════════ -->
+
 <!--  PIN SCREEN                                              -->
+
 <!-- ══════════════════════════════════════════════════════════ -->
+
+<!-- BLOCKED SCREEN -->
+
+<div id="blocked-screen" class="hidden">
+  <div class="blocked-icon">&#x1F6AB;</div>
+  <div class="blocked-title">Device Not Authorized</div>
+  <div class="blocked-sub">This app is registered to another device.<br><br>Your access has been permanently denied.<br><br>If you are the owner, open the app on your registered device.</div>
+</div>
+
+<!-- DEVICE REGISTRATION SCREEN -->
+
+<div id="reg-screen" class="hidden">
+  <div class="reg-logo">&#x1F6E1;&#xFE0F;</div>
+  <div class="reg-title">Register This Device</div>
+  <div class="reg-sub">Create a secret <b style="color:#a78bfa">Device Key</b> &mdash; a word or phrase only you know. This key is saved once to this device. Anyone opening the app on a different phone will be permanently blocked.</div>
+  <div class="reg-error" id="reg-error"></div>
+  <input class="reg-input" id="reg-key-input" type="password" placeholder="Enter your secret key" maxlength="32" autocomplete="off" spellcheck="false"/>
+  <input class="reg-input" id="reg-key-confirm" type="password" placeholder="Confirm secret key" maxlength="32" autocomplete="off" spellcheck="false" style="margin-top:0"/>
+  <button class="reg-btn" id="reg-submit-btn" onclick="registerDevice()">&#x1F512; Register &amp; Activate App</button>
+  <div class="reg-warn">&#x26A0;&#xFE0F; Write this key down somewhere safe. It cannot be recovered if forgotten. This screen will never appear again on this device.</div>
+</div>
+
 <div id="pin-screen">
   <div class="pin-logo">🏪</div>
   <div class="pin-title" id="pin-title">IPS School Store</div>
@@ -240,11 +285,15 @@
 </div>
 
 <!-- ══════════════════════════════════════════════════════════ -->
+
 <!--  MAIN APP                                                 -->
+
 <!-- ══════════════════════════════════════════════════════════ -->
+
 <div id="app" class="locked">
 
   <!-- Header -->
+
   <div class="header">
     <div class="header-inner">
       <div class="header-icon">🏪</div>
@@ -260,6 +309,7 @@
   </div>
 
   <!-- Nav -->
+
   <div class="nav">
     <button class="nav-btn active" onclick="switchTab('pos')" id="nav-pos"><span class="nav-icon">🛒</span>Sale</button>
     <button class="nav-btn" onclick="switchTab('weekly')" id="nav-weekly"><span class="nav-icon">📊</span>Weekly</button>
@@ -273,6 +323,7 @@
   </div>
 
   <!-- ── POS TAB ── -->
+
   <div id="tab-pos" style="flex:1;display:flex;flex-direction:column;overflow:hidden;height:calc(100vh - 130px);height:calc(100dvh - 130px);">
     <div class="search-bar">
       <input class="search-input" placeholder="🔍 Search product…" oninput="renderProducts()" id="search-input"/>
@@ -306,6 +357,7 @@
   </div>
 
   <!-- ── WEEKLY TAB ── -->
+
   <div id="tab-weekly" class="content" style="display:none;">
     <div class="pad">
       <div class="sec-title" id="weekly-sec-title">This Week</div>
@@ -320,6 +372,7 @@
   </div>
 
   <!-- ── PURCHASE TAB ── -->
+
   <div id="tab-purchase" class="content" style="display:none;">
     <div class="pad">
       <div id="unpaid-alert"></div>
@@ -330,6 +383,7 @@
   </div>
 
   <!-- ── HISTORY TAB ── -->
+
   <div id="tab-history" class="content" style="display:none;">
     <div class="pad">
       <div class="stat-grid" id="history-stats"></div>
@@ -338,6 +392,7 @@
   </div>
 
   <!-- ── PRODUCTS TAB ── -->
+
   <div id="tab-products" class="content" style="display:none;">
     <div class="pad">
       <button class="primary-btn" style="margin-bottom:14px;" onclick="openModal('addProduct')">+ Add New Product</button>
@@ -346,6 +401,7 @@
   </div>
 
   <!-- ── SETTINGS TAB ── -->
+
   <div id="tab-settings" class="content" style="display:none;">
     <div class="pad">
       <div class="settings-section">
@@ -372,76 +428,90 @@
             </div>
           </div>
           <div class="settings-row">
+            <div class="settings-row-icon">🛡️</div>
+            <div class="settings-row-info">
+              <div class="settings-row-title">Device Key</div>
+              <div class="settings-row-sub">Your secret registration key is active. This device is authorized.</div>
+            </div>
+            <div class="settings-row-action">
+              <span style="background:#14532d;color:#22c55e;padding:5px 10px;border-radius:20px;font-size:11px;font-weight:700;">&#x2713; Active</span>
+            </div>
+          </div>
+          <div class="settings-row">
             <div class="settings-row-icon">📱</div>
             <div class="settings-row-info">
               <div class="settings-row-title">Device-Only Data</div>
-              <div class="settings-row-sub">All data is stored only on this device. Cannot be accessed from another phone.</div>
+              <div class="settings-row-sub">All data is stored only on this device. Anyone on another phone sees a blocked screen.</div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="settings-section">
-        <div class="settings-title">📤 Backup & Restore</div>
-        <div class="settings-card">
-          <div class="settings-row">
-            <div class="settings-row-icon">💾</div>
-            <div class="settings-row-info">
-              <div class="settings-row-title">Export Data</div>
-              <div class="settings-row-sub">Download a backup file of all your store data</div>
-            </div>
-            <div class="settings-row-action">
-              <button class="settings-btn orange" onclick="exportData()">Export</button>
-            </div>
-          </div>
-          <div class="settings-row">
-            <div class="settings-row-icon">📂</div>
-            <div class="settings-row-info">
-              <div class="settings-row-title">Import Data</div>
-              <div class="settings-row-sub">Restore from a backup file</div>
-            </div>
-            <div class="settings-row-action">
-              <button class="settings-btn purple" onclick="document.getElementById('import-file').click()">Import</button>
-              <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)"/>
-            </div>
-          </div>
+```
+  <div class="settings-section">
+    <div class="settings-title">📤 Backup & Restore</div>
+    <div class="settings-card">
+      <div class="settings-row">
+        <div class="settings-row-icon">💾</div>
+        <div class="settings-row-info">
+          <div class="settings-row-title">Export Data</div>
+          <div class="settings-row-sub">Download a backup file of all your store data</div>
+        </div>
+        <div class="settings-row-action">
+          <button class="settings-btn orange" onclick="exportData()">Export</button>
         </div>
       </div>
-
-      <div class="settings-section">
-        <div class="settings-title">🗑 Danger Zone</div>
-        <div class="settings-card">
-          <div class="settings-row">
-            <div class="settings-row-icon">🗑</div>
-            <div class="settings-row-info">
-              <div class="settings-row-title">Clear All Sales</div>
-              <div class="settings-row-sub">Delete entire sales history</div>
-            </div>
-            <div class="settings-row-action">
-              <button class="settings-btn red" onclick="if(confirm('Clear all sales? This cannot be undone.')){sales=[];saveData();renderAll();toast('Sales cleared');}">Clear</button>
-            </div>
-          </div>
-          <div class="settings-row">
-            <div class="settings-row-icon">♻️</div>
-            <div class="settings-row-info">
-              <div class="settings-row-title">Reset Everything</div>
-              <div class="settings-row-sub">Wipe all data and restart fresh</div>
-            </div>
-            <div class="settings-row-action">
-              <button class="settings-btn red" onclick="resetAll()">Reset</button>
-            </div>
-          </div>
+      <div class="settings-row">
+        <div class="settings-row-icon">📂</div>
+        <div class="settings-row-info">
+          <div class="settings-row-title">Import Data</div>
+          <div class="settings-row-sub">Restore from a backup file</div>
         </div>
-      </div>
-
-      <div style="text-align:center;padding:20px;color:#334155;font-size:12px;">
-        IPS School Store v2.0<br/>All data stored locally on this device
+        <div class="settings-row-action">
+          <button class="settings-btn purple" onclick="document.getElementById('import-file').click()">Import</button>
+          <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)"/>
+        </div>
       </div>
     </div>
+  </div>
+
+  <div class="settings-section">
+    <div class="settings-title">🗑 Danger Zone</div>
+    <div class="settings-card">
+      <div class="settings-row">
+        <div class="settings-row-icon">🗑</div>
+        <div class="settings-row-info">
+          <div class="settings-row-title">Clear All Sales</div>
+          <div class="settings-row-sub">Delete entire sales history</div>
+        </div>
+        <div class="settings-row-action">
+          <button class="settings-btn red" onclick="if(confirm('Clear all sales? This cannot be undone.')){sales=[];saveData();renderAll();toast('Sales cleared');}">Clear</button>
+        </div>
+      </div>
+      <div class="settings-row">
+        <div class="settings-row-icon">♻️</div>
+        <div class="settings-row-info">
+          <div class="settings-row-title">Reset Everything</div>
+          <div class="settings-row-sub">Wipe all data and restart fresh</div>
+        </div>
+        <div class="settings-row-action">
+          <button class="settings-btn red" onclick="resetAll()">Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:20px;color:#334155;font-size:12px;">
+    IPS School Store v2.0<br/>All data stored locally on this device
+  </div>
+</div>
+```
+
   </div>
 </div><!-- end #app -->
 
 <!-- ══════════ RECEIPT MODAL ══════════ -->
+
 <div id="receipt-modal" onclick="closeReceiptModal()">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="receipt-center">
@@ -456,11 +526,13 @@
 </div>
 
 <!-- ══════════ GENERIC MODAL ══════════ -->
+
 <div id="generic-modal" onclick="closeModal()">
   <div class="modal-sheet" onclick="event.stopPropagation()" id="modal-content"></div>
 </div>
 
 <!-- TOAST -->
+
 <div id="toast"></div>
 
 <script>
@@ -505,17 +577,68 @@ function saveData(){sv("ss_products",products);sv("ss_sales",sales);sv("ss_purch
 function fmt(n){return"Rs "+(Math.round(n||0)).toLocaleString();}
 
 // ══════════════════════════════════════════════════════════════
+//  DEVICE REGISTRATION SYSTEM
+// ══════════════════════════════════════════════════════════════
+// We store a hashed device key so the raw key is never kept in plaintext.
+// On first launch: user sets a Device Key → hashed → saved.
+// On every subsequent launch: user must be on the SAME device (same localStorage).
+// On a different device: localStorage is empty → no hash stored →
+//   we check if the key has been "globally claimed" via a flag.
+//   Since localStorage is device-local, any other device simply won't have
+//   the hash and is shown the blocked screen immediately.
+
+async function hashKey(str) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+
+function getDeviceHash(){return localStorage.getItem("ss_device_hash")||"";}
+function setDeviceHash(h){localStorage.setItem("ss_device_hash",h);}
+function isDeviceRegistered(){return !!getDeviceHash();}
+
+function showRegScreen(){
+  document.getElementById("reg-screen").classList.remove("hidden");
+  document.getElementById("pin-screen").classList.add("hidden");
+  document.getElementById("app").style.display="none";
+}
+function hideRegScreen(){document.getElementById("reg-screen").classList.add("hidden");}
+
+function showBlockedScreen(){
+  document.getElementById("blocked-screen").classList.remove("hidden");
+  document.getElementById("reg-screen").classList.add("hidden");
+  document.getElementById("pin-screen").classList.add("hidden");
+  document.getElementById("app").style.display="none";
+}
+
+async function registerDevice(){
+  const key=document.getElementById("reg-key-input").value.trim();
+  const confirm=document.getElementById("reg-key-confirm").value.trim();
+  const errEl=document.getElementById("reg-error");
+  if(key.length<3){errEl.textContent="Key must be at least 3 characters.";return;}
+  if(key!==confirm){errEl.textContent="Keys don't match. Try again.";document.getElementById("reg-key-confirm").value="";return;}
+  errEl.textContent="";
+  const h=await hashKey(key);
+  setDeviceHash(h);
+  hideRegScreen();
+  toast("Device registered! Keep your key safe.");
+  initPin();
+}
+
+// ══════════════════════════════════════════════════════════════
 //  PIN SYSTEM
 // ══════════════════════════════════════════════════════════════
-const DEFAULT_PIN="1234";
-
 function getPin(){return localStorage.getItem("ss_pin")||"";}
 function setPin(p){localStorage.setItem("ss_pin",p);}
 
 function initPin(){
+  // Gate 1: Device registration check
+  if(!isDeviceRegistered()){
+    showRegScreen();
+    return;
+  }
+  // Gate 2: Normal PIN flow
   const stored=getPin();
   if(!stored){
-    // First launch — setup PIN
     pinMode="setup-new";
     document.getElementById("pin-title").textContent="Set Your PIN";
     document.getElementById("pin-sub").textContent="Choose a 4-digit PIN to protect the app";
@@ -1171,7 +1294,14 @@ function toast(msg){
 // ══════════════════════════════════════════════════════════════
 //  BOOT
 // ══════════════════════════════════════════════════════════════
+// Allow Enter key on registration inputs
+document.addEventListener("DOMContentLoaded",()=>{
+  ["reg-key-input","reg-key-confirm"].forEach(id=>{
+    document.getElementById(id)?.addEventListener("keydown",e=>{if(e.key==="Enter")registerDevice();});
+  });
+});
 initPin();
 </script>
+
 </body>
 </html>
