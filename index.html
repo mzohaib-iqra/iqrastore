@@ -267,11 +267,74 @@ button{cursor:pointer;}
   <div id="tab-purchase" class="content" style="display:none;">
     <div class="pad">
       <div id="unpaid-alert"></div>
-      <div id="stock-summary"></div>
-      <button class="action-btn" style="background:#1f1a10;color:#f7931e;border-color:#854d0e;" onclick="openModal('addPurchase')">+ Record Wholesale Purchase</button>
-      <div class="sec-title">PURCHASE HISTORY</div>
-      <div id="purchase-list"></div>
+
+```
+  <!-- ADD STOCK FORM (always visible, no modal) -->
+  <div style="background:#111827;border:1px solid #854d0e;border-radius:16px;padding:14px;margin-bottom:14px;">
+    <div style="font-weight:800;font-size:15px;color:#f7931e;margin-bottom:12px;">📦 Add Wholesale Stock</div>
+
+    <div class="field">
+      <div class="field-label">Select Product</div>
+      <select class="field-select" id="ps-prod" onchange="onProdChange()">
+        <option value="">— Choose product —</option>
+      </select>
     </div>
+
+    <div id="ps-bundle-info" style="background:#0d1117;border-radius:10px;padding:10px 12px;margin-bottom:12px;display:none;font-size:12px;color:#64748b;"></div>
+
+    <div class="grid-2">
+      <div class="field">
+        <div class="field-label">No. of Bundles</div>
+        <input class="field-input" id="ps-bundles" type="number" value="1" min="1" oninput="onBundleChange()">
+      </div>
+      <div class="field">
+        <div class="field-label">Pcs per Bundle</div>
+        <input class="field-input" id="ps-ippb" type="number" placeholder="auto" oninput="onBundleChange()">
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <div class="field-label">Cost per Bundle (Rs)</div>
+        <input class="field-input" id="ps-bcost" type="number" placeholder="auto" oninput="onBundleChange()">
+      </div>
+      <div class="field">
+        <div class="field-label">Date</div>
+        <input class="field-input" id="ps-date" type="text">
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Note (optional)</div>
+      <input class="field-input" id="ps-note" type="text" placeholder="e.g. From Al-Noor wholesale">
+    </div>
+
+    <!-- Live Preview -->
+    <div id="ps-preview" style="background:#0d1117;border-radius:10px;padding:12px;margin-bottom:12px;display:none;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+        <span style="font-size:12px;color:#94a3b8;">Bundles × Pcs</span>
+        <span style="font-weight:700;color:#e2e8f0;" id="ps-prev-breakdown">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+        <span style="font-size:12px;color:#94a3b8;">Total Items Added</span>
+        <span style="font-weight:800;color:#22c55e;" id="ps-prev-items">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;">
+        <span style="font-size:13px;color:#94a3b8;">Total Cost</span>
+        <span style="font-weight:800;font-size:16px;color:#f7931e;" id="ps-prev-cost">—</span>
+      </div>
+    </div>
+
+    <button style="width:100%;padding:13px;background:linear-gradient(135deg,#f7931e,#e84393);color:#fff;border:none;border-radius:14px;font-weight:800;font-size:15px;" onclick="addStock()">+ Add to Stock</button>
+  </div>
+
+  <div id="stock-summary"></div>
+
+  <div class="sec-title">PURCHASE HISTORY</div>
+  <div id="purchase-list"></div>
+</div>
+```
+
   </div>
 
   <!-- HISTORY TAB -->
@@ -629,26 +692,133 @@ function renderWeekly(){
 function deleteProfit(id){profits=profits.filter(p=>p.id!==id);saveData();renderWeekly();}
 
 // ── Purchase / Stock ──
+function populateProductSelect(){
+  const sel=document.getElementById("ps-prod");
+  if(!sel)return;
+  const cur=sel.value;
+  sel.innerHTML='<option value="">— Choose product —</option>'+
+    products.map(p=>`<option value="${p.id}">${p.emoji} ${p.name} (stock: ${getStock(p.id)} pcs)</option>`).join("");
+  if(cur)sel.value=cur;
+  // set today date if empty
+  const dateEl=document.getElementById("ps-date");
+  if(dateEl&&!dateEl.value)dateEl.value=todayStr();
+}
+
+function onProdChange(){
+  const sel=document.getElementById("ps-prod");
+  const pid=sel?parseInt(sel.value):0;
+  const prod=products.find(p=>p.id===pid);
+  const info=document.getElementById("ps-bundle-info");
+  if(prod&&info){
+    info.style.display="block";
+    info.innerHTML=`Default: <b style="color:#f7931e">${prod.bundleQty} pcs/bundle</b> @ <b style="color:#f7931e">${fmt(prod.bundleCost)}/bundle</b> &nbsp;|&nbsp; Cost/unit: <b style="color:#22c55e">${fmt(prod.costPrice)}</b>`;
+  } else if(info){
+    info.style.display="none";
+  }
+  // clear overrides
+  const ippbEl=document.getElementById("ps-ippb");
+  const bcostEl=document.getElementById("ps-bcost");
+  if(ippbEl)ippbEl.value="";
+  if(bcostEl)bcostEl.value="";
+  onBundleChange();
+}
+
+function onBundleChange(){
+  const sel=document.getElementById("ps-prod");
+  const pid=sel?parseInt(sel.value):0;
+  const prod=products.find(p=>p.id===pid);
+  const preview=document.getElementById("ps-preview");
+  if(!prod||!preview){if(preview)preview.style.display="none";return;}
+  const bundlesEl=document.getElementById("ps-bundles");
+  const ippbEl=document.getElementById("ps-ippb");
+  const bcostEl=document.getElementById("ps-bcost");
+  const bundles=parseInt(bundlesEl?bundlesEl.value:1)||1;
+  const ippb=parseInt(ippbEl&&ippbEl.value?ippbEl.value:0)||prod.bundleQty;
+  const bcost=parseFloat(bcostEl&&bcostEl.value?bcostEl.value:0)||prod.bundleCost;
+  const totalItems=bundles*ippb;
+  const totalCost=bundles*bcost;
+  preview.style.display="block";
+  const bdEl=document.getElementById("ps-prev-breakdown");
+  const itEl=document.getElementById("ps-prev-items");
+  const coEl=document.getElementById("ps-prev-cost");
+  if(bdEl)bdEl.textContent=bundles+" × "+ippb+" pcs";
+  if(itEl)itEl.textContent=totalItems+" pcs";
+  if(coEl)coEl.textContent=fmt(totalCost);
+}
+
+function addStock(){
+  const sel=document.getElementById("ps-prod");
+  const pid=sel?parseInt(sel.value):0;
+  if(!pid){toast("⚠️ Select a product first");return;}
+  const prod=products.find(p=>p.id===pid);
+  if(!prod){toast("Product not found");return;}
+  const bundlesEl=document.getElementById("ps-bundles");
+  const ippbEl=document.getElementById("ps-ippb");
+  const bcostEl=document.getElementById("ps-bcost");
+  const dateEl=document.getElementById("ps-date");
+  const noteEl=document.getElementById("ps-note");
+  const bundles=parseInt(bundlesEl?bundlesEl.value:1)||1;
+  if(bundles<1){toast("Enter at least 1 bundle");return;}
+  const ippb=parseInt(ippbEl&&ippbEl.value?ippbEl.value:0)||prod.bundleQty;
+  const bcost=parseFloat(bcostEl&&bcostEl.value?bcostEl.value:0)||prod.bundleCost;
+  const rec={
+    id:Date.now(),
+    date:dateEl?dateEl.value:todayStr(),
+    productId:prod.id,
+    productName:prod.name,
+    emoji:prod.emoji,
+    bundlesQty:bundles,
+    itemsPerBundle:ippb,
+    bundleQty:prod.bundleQty,
+    bundleCost:bcost,
+    totalCost:bcost*bundles,
+    totalItems:ippb*bundles,
+    note:noteEl?noteEl.value:"",
+    paid:false
+  };
+  purchases.unshift(rec);
+  saveData();
+  // reset form
+  if(sel)sel.value="";
+  if(bundlesEl)bundlesEl.value="1";
+  if(ippbEl)ippbEl.value="";
+  if(bcostEl)bcostEl.value="";
+  if(noteEl)noteEl.value="";
+  const info=document.getElementById("ps-bundle-info");
+  if(info)info.style.display="none";
+  const preview=document.getElementById("ps-preview");
+  if(preview)preview.style.display="none";
+  renderPurchase();
+  renderProducts();
+  updateUnpaidBadge();
+  toast("✅ Added "+rec.totalItems+" pcs of "+prod.name+" to stock!");
+}
+
 function renderPurchase(){
+  populateProductSelect();
   const unpaid=purchases.filter(p=>!p.paid);
   const ut=unpaid.reduce((a,p)=>a+p.totalCost,0);
   document.getElementById("unpaid-alert").innerHTML=unpaid.length?`<div class="alert-danger"><div class="alert-title">⚠️ Amount Due to Wholesale</div><div class="alert-amount">${fmt(ut)}</div><div class="alert-sub">${unpaid.length} unpaid — tap to mark paid</div></div>`:"";
   // Stock grid
-  let sg=`<div class="sec-title">📦 STOCK LEVELS</div><div class="stat-grid">`;
+  let sg=`<div class="sec-title">📊 CURRENT STOCK LEVELS</div><div class="stat-grid">`;
   products.forEach(p=>{
     const s=getStock(p.id);
-    const c=s===0?"#ef4444":s<=5?"#f59e0b":"#22c55e";
-    sg+=`<div style="background:#111827;border:1px solid #1e2d3d;border-left:3px solid ${c};border-radius:12px;padding:10px;"><div style="font-size:18px">${p.emoji}</div><div style="font-size:12px;font-weight:700;color:#e2e8f0;margin-top:2px">${p.name}</div><div style="font-size:14px;font-weight:800;color:${c};margin-top:2px">${s} pcs</div></div>`;
+    const col=s===0?"#ef4444":s<=5?"#f59e0b":"#22c55e";
+    sg+=`<div style="background:#111827;border:1px solid #1e2d3d;border-left:3px solid ${col};border-radius:12px;padding:10px;cursor:pointer;" onclick="quickSelectProduct(${p.id})">
+      <div style="font-size:18px">${p.emoji}</div>
+      <div style="font-size:12px;font-weight:700;color:#e2e8f0;margin-top:2px;line-height:1.2">${p.name}</div>
+      <div style="font-size:14px;font-weight:800;color:${col};margin-top:4px">${s} pcs</div>
+    </div>`;
   });
   sg+=`</div>`;
   document.getElementById("stock-summary").innerHTML=sg;
-  if(!purchases.length){document.getElementById("purchase-list").innerHTML=`<div class="empty"><div class="empty-icon">📦</div><div class="empty-text">No purchases yet</div></div>`;return;}
+  if(!purchases.length){document.getElementById("purchase-list").innerHTML=`<div class="empty"><div class="empty-icon">📦</div><div class="empty-text">No purchases yet.<br>Use the form above to add stock.</div></div>`;return;}
   document.getElementById("purchase-list").innerHTML=purchases.map(p=>`
     <div class="card"><div class="prod-list-item">
       <span style="font-size:24px">${p.emoji}</span>
       <div class="prod-list-info">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <div class="prod-list-name">${p.productName}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;">
+          <div class="prod-list-name" style="flex:1">${p.productName}</div>
           <button class="paid-badge ${p.paid?"paid":"unpaid"}" onclick="togglePurchasePaid(${p.id})">${p.paid?"✓ Paid":"Unpaid"}</button>
         </div>
         <div class="prod-list-meta">${p.bundlesQty} bundle${p.bundlesQty!==1?"s":""} × ${p.itemsPerBundle||p.bundleQty} pcs = <span style="font-weight:700;color:#f7931e">${fmt(p.totalCost)}</span></div>
@@ -656,6 +826,14 @@ function renderPurchase(){
       </div>
       <button class="del-btn" onclick="deletePurchase(${p.id})">🗑</button>
     </div></div>`).join("");
+}
+
+// Tap a stock card to quick-select that product in the form above
+function quickSelectProduct(pid){
+  const sel=document.getElementById("ps-prod");
+  if(sel){sel.value=pid;onProdChange();}
+  // scroll to top of tab
+  document.getElementById("tab-purchase").scrollTop=0;
 }
 function togglePurchasePaid(id){purchases=purchases.map(p=>p.id===id?{...p,paid:!p.paid}:p);saveData();renderPurchase();updateUnpaidBadge();}
 function deletePurchase(id){purchases=purchases.filter(p=>p.id!==id);saveData();renderPurchase();updateUnpaidBadge();renderProducts();}
@@ -749,7 +927,6 @@ function openModal(type,data={}){
       <div class="field"><div class="field-label">Cost per Bundle (Rs) <span style="color:#64748b;font-size:11px">(leave blank = product default)</span></div><input class="field-input" id="f-bcostover" type="number" placeholder="use product default" oninput="calcPurchase()"></div>
       <div class="field"><div class="field-label">Date</div><input class="field-input" id="f-date" value="${todayStr()}"></div>
       <div class="field"><div class="field-label">Note (optional)</div><input class="field-input" id="f-note" placeholder="e.g. From Al-Noor wholesale"></div>
-      <div id="purch-preview" style="background:#0d1117;border-radius:12px;padding:12px;margin-bottom:14px;display:none;" id="purch-preview"></div>
       <button class="primary-btn" onclick="savePurchase()">Record Purchase</button>`;
   } else if(type==="addProfit"){
     html=`<div class="modal-title">Profit Received from Shopkeeper</div>
